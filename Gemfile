@@ -2,11 +2,10 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.1'
 gem 'heroku', '2.25.0'
+gem 'make_resourceful', '1.0.1'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-
-gem 'pg', '0.13.2'
 
 gem 'json', '1.7.3'
 
@@ -38,3 +37,11 @@ gem 'jquery-rails', '2.0.2'
 
 # To use debugger
 # gem 'ruby-debug'
+
+group :development do
+  gem 'sqlite3', '1.3.6'
+end
+
+group :production do
+  gem 'pg', '0.13.2'
+end

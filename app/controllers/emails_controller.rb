@@ -4,12 +4,15 @@ class EmailsController < ApplicationController
     belongs_to :endpoint
     
     after :create do
+      logger.critical "raw_body => #{request.raw_body}"
+      email.params.create(:key => 'raw_body', :value => request.raw_body)
+
       params.each do |k, v|
         # don't log or proxy internal stuff
         next if %w(action controller endpoint_id).include? k
 
-        logger.debug "#{k} => #{v}"
-        @email.params.create(:key => k, :value => v)
+        logger.critical "#{k} => #{v}"
+        # @email.params.create(:key => k, :value => v)
       end
     end
 

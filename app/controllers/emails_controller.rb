@@ -14,7 +14,7 @@ class EmailsController < ApplicationController
     end
 
     response_for :create do |format|
-      format.json { render :json => @email }
+      format.all { render :nothing => true, :status => 200 }
     end
   end
 

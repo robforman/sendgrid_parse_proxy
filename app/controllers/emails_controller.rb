@@ -1,11 +1,10 @@
 class EmailsController < ApplicationController
   def create
-    logger.info "VERBOSE: request.raw_post => #{request.raw_post}" if params[:verbose]
+    logger.info "VERBOSE: [request.raw_post] => #{request.raw_post}"
     @endpoint = Endpoint.find(params[:endpoint_id])
 
     parse_email = Sendgrid::ParseEmail.new(params, encoding="UTF-8", ignore=%w(action controller endpoint_id verbose))
-    parse_email.params.each { |k, v| logger.info "VERBOSE: #{k} => #{v}" } if params[:verbose]
-
+    parse_email.params.each { |k, v| logger.info "VERBOSE: [#{k}] => #{v}" }
     response = Typhoeus::Request.post(@endpoint.proxy_url, :params => parse_email.params)
 
     @email = @endpoint.emails.build(

@@ -1,24 +1,17 @@
 class EmailsController < ApplicationController
-  make_resourceful do
-    actions :all
-    belongs_to :endpoint
-    
-    after :create do
-      logger.info "raw_post => #{request.raw_post}"
-      @email.params.create(:key => 'raw_post', :value => request.post?)
+  def create
+    logger.info "VERBOSE: request.raw_post => #{request.raw_post}"
 
-      params.each do |k, v|
-        # don't log or proxy internal stuff
-        next if %w(action controller endpoint_id).include? k
+    @endpoint = Endpoint.find(params[:endpoint_id])
+    @email = @endpoint.emails.create
 
-        logger.info "#{k} => #{v}"
-        # @email.params.create(:key => k, :value => v)
-      end
+    parse_email = Sendgrid::ParseEmail.new(params, encoding="UTF-8", ignore=%w(action controller endpoint_id verbose))
+    parse_email.params.each do |key, value|
+      logger.info "VERBOSE: #{key} => '#{value}', #{key}.encoding => #{value.encoding}"
     end
 
-    response_for :create do |format|
+    respond_to do |format|
       format.all { render :nothing => true, :status => 200 }
     end
   end
-
 end

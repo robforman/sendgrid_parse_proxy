@@ -1,3 +1,5 @@
+require 'mail'
+
 module Sendgrid
   # Author::  Rob Forman <rob@robforman.com>
   #
@@ -13,10 +15,10 @@ module Sendgrid
       ignore.each { |e| @params.delete(e) if @params.has_key?(e)}
 
       # automatically set and/or change encoding the fields which they pass charsets
-      if @params.has_key?(:charsets)
+      if @params.has_key? :charsets
         charsets = JSON.parse(@params[:charsets])
         charsets.each do |key, from_encoding|
-          if @params.has_key?(key.to_sym)
+          if @params.has_key? key.to_sym
             value = @params[key.to_sym].force_encoding(from_encoding)
 
             if from_encoding.downcase != to_encoding.downcase
@@ -27,6 +29,13 @@ module Sendgrid
         end
         @params[:charsets] = charsets.to_json
       end
+    end
+
+    def header(name)
+      return nil unless @params.has_key? :headers
+
+      mail = Mail.new(@params[:headers])
+      mail.header[name].to_s
     end
 
     # make params accessible for easy query

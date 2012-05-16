@@ -11,12 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120514230640) do
+ActiveRecord::Schema.define(:version => 20120514230630) do
 
   create_table "emails", :force => true do |t|
     t.integer  "endpoint_id"
-    t.datetime "created_at",  :null => false
-    t.datetime "updated_at",  :null => false
+    t.string   "message_id",    :limit => 256
+    t.string   "from",          :limit => 256
+    t.string   "to",            :limit => 256
+    t.string   "subject",       :limit => 256
+    t.boolean  "sent",                         :null => false
+    t.text     "error_message"
+    t.datetime "created_at",                   :null => false
+    t.datetime "updated_at",                   :null => false
   end
 
   add_index "emails", ["endpoint_id", "created_at"], :name => "index_emails_on_endpoint_id_and_created_at"
@@ -26,15 +32,5 @@ ActiveRecord::Schema.define(:version => 20120514230640) do
     t.datetime "created_at",                :null => false
     t.datetime "updated_at",                :null => false
   end
-
-  create_table "params", :force => true do |t|
-    t.integer  "email_id"
-    t.string   "key",        :limit => 256
-    t.text     "value"
-    t.datetime "created_at",                :null => false
-    t.datetime "updated_at",                :null => false
-  end
-
-  add_index "params", ["email_id"], :name => "index_params_on_email_id"
 
 end

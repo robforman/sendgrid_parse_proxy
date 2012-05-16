@@ -123,7 +123,7 @@ DEPENDENCIES
   heroku (= 2.25.0)
   jquery-rails (= 2.0.2)
   json (= 1.7.3)
-  mail
+  mail (= 2.4.4)
   make_resourceful (= 1.0.1)
   pg (= 0.13.2)
   rails (= 3.2.1)

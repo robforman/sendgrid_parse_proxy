@@ -3,15 +3,18 @@ class EmailsController < ApplicationController
     logger.info "VERBOSE: [request.raw_post] => #{request.raw_post}"
     @endpoint = Endpoint.find(params[:endpoint_id])
 
-    parse_email = Sendgrid::ParseEmail.new(params, encoding="UTF-8", ignore=%w(action controller endpoint_id verbose))
-    parse_email.params.each { |k, v| logger.info "VERBOSE: [#{k}] => #{v}" }
-    response = Typhoeus::Request.post(@endpoint.proxy_url, :params => parse_email.params)
+    new_params = Sendgrid::Parse::EncodableHash.new(params)
+    new_params.encode!("UTF-8", ignore=%w(action controller endpoint_id verbose))
+    new_params.each { |k, v| logger.info "VERBOSE: [#{k}] => #{v}" }
+
+    response = Typhoeus::Request.post(@endpoint.proxy_url, :params => new_params)
+    mail = Mail.new(new_params[:headers])
 
     @email = @endpoint.emails.build(
-      :message_id => parse_email.header(:message_id),
-      :to => parse_email.to,
-      :from => parse_email.from,
-      :subject => parse_email.subject,
+      :message_id => mail.message_id,
+      :to => new_params[:to],
+      :from => new_params[:from],
+      :subject => new_params[:subject],
       :sent => true
     )
 

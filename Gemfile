@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem 'rails', '3.2.1'
 gem 'heroku', '2.25.0'
 gem 'make_resourceful', '1.0.1'
+gem 'sendgrid-parse', '0.1.1'
 gem 'typhoeus', '0.3.3'
 gem 'mail', '2.4.4'
 

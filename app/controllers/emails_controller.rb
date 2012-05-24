@@ -1,4 +1,7 @@
 class EmailsController < ApplicationController
+  skip_before_filter :verify_authenticity_token
+  before_filter :ensure_authentication_token
+
   def create
     logger.info "VERBOSE: [request.raw_post] => #{request.raw_post}"
     @endpoint = Endpoint.find(params[:endpoint_id])

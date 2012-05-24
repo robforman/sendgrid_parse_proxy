@@ -57,4 +57,7 @@ You can set the authentication token required by setting a variable called AUTH_
 In Heroku, this would be:
 ```bash
 $ heroku config:add AUTH_TOKEN=some_secure_token
+Adding config vars and restarting app... done
+  AUTH_TOKEN => some_secure_token
+$
 ```

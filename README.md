@@ -9,6 +9,9 @@ the appropriate endpoint url.
 SendGrid is looking for a response code of 200, so the app just blocks and passes back whatever
 it receives from the url.
 
+More on SendGrid Parse API:
+http://docs.sendgrid.com/documentation/api/parse-api-2/
+
 
 ## Getting Started
 
